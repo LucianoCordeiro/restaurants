@@ -25,6 +25,19 @@ RSpec.describe Menu, type: :model do
     expect(menu.valid?).to be true
   end
 
+  it "must be unique within a restaurant" do
+    Menu.create(name: "Salads", restaurant: restaurant)
+
+    menu = Menu.new(name: "Salads", restaurant: restaurant)
+
+    expect(menu.valid?).to be false
+    expect(menu.errors.full_messages).to include "Name has already been taken"
+
+    another_restaurant_menu = Menu.new(name: "Salads", restaurant: Restaurant.create(name: "Burger King"))
+
+    expect(another_restaurant_menu.valid?).to be true
+  end
+
   it "has many menu items" do
     hot_dishes = Menu.create(name: "Hot Dishes", restaurant: restaurant)
     cold_dishes = Menu.create(name: "Cold Dishes", restaurant: restaurant)

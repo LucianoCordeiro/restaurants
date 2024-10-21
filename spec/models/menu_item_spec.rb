@@ -36,4 +36,17 @@ RSpec.describe MenuItem, type: :model do
 
     expect(menu.valid?).to be true
   end
+
+  it "must be unique within a menu" do
+    MenuItem.create(menu: menu, item: item, price: 10.65)
+
+    menu_item = MenuItem.new(menu: menu, item: item, price: 7.65)
+
+    expect(menu_item.valid?).to be false
+    expect(menu_item.errors.full_messages).to include "Item has already been taken"
+
+    menu_item.item = FactoryBot.create(:item, name: "Meat")
+
+    expect(menu_item.valid?).to be true
+  end
 end
