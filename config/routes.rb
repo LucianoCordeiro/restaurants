@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :menus, only: [:index, :show]
   end
 
+  post "import", to: "import#import"
 
   # Defines the root path route ("/")
   # root "posts#index"
